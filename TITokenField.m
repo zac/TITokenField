@@ -65,7 +65,7 @@
 - (void)setup {
 	
 	[self setBackgroundColor:[UIColor clearColor]];
-	[self setDelaysContentTouches:YES];
+	[self setDelaysContentTouches:NO];
 	[self setMultipleTouchEnabled:NO];
 	
 	_showAlreadyTokenized = NO;
@@ -81,6 +81,7 @@
 	[_tokenField addTarget:self action:@selector(tokenFieldTextDidChange:) forControlEvents:UIControlEventEditingChanged];
 	[_tokenField addTarget:self action:@selector(tokenFieldFrameWillChange:) forControlEvents:(UIControlEvents)TITokenFieldControlEventFrameWillChange];
 	[_tokenField addTarget:self action:@selector(tokenFieldFrameDidChange:) forControlEvents:(UIControlEvents)TITokenFieldControlEventFrameDidChange];
+    
 	[_tokenField setDelegate:self];
 	[self addSubview:_tokenField];
 	
@@ -712,6 +713,9 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 	_selectedToken = token;
 	[_selectedToken setSelected:YES];
 	
+    // dismiss the menu when selecting a token.
+    [[UIMenuController sharedMenuController] setMenuVisible:NO animated:YES];
+    
 	[self becomeFirstResponder];
 	[self setText:kTextHidden];
 }
