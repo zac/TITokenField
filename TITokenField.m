@@ -745,7 +745,7 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 - (void)tokenTouchDown:(TIToken *)token {
 	
 	if (_selectedToken != token){
-		[_selectedToken setSelected:NO];
+		[_selectedToken setSelected:NO animated:YES];
 		_selectedToken = nil;
 	}
 }
@@ -1130,6 +1130,19 @@ CGPathRef CGPathCreateDisclosureIndicatorPath(CGPoint arrowPointFront, CGFloat h
         } else if (!self.highlighted) {
             self.backgroundColor = [UIColor clearColor];
         }
+    }
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    void(^animations)() = ^{
+        [self setSelected:selected];
+    };
+    
+    if (animated) {
+        [UIView animateWithDuration:0.1f animations:animations];
+    } else {
+        animations();
     }
 }
 

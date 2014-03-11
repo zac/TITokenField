@@ -129,6 +129,8 @@ typedef enum {
 @property (nonatomic, strong) UIColor * tintColor UI_APPEARANCE_SELECTOR;
 @property (nonatomic, assign) CGFloat maxWidth;
 
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+
 - (instancetype)initWithTitle:(NSString *)aTitle;
 - (instancetype)initWithTitle:(NSString *)aTitle representedObject:(id)object;
 - (instancetype)initWithTitle:(NSString *)aTitle representedObject:(id)object font:(UIFont *)aFont;
