@@ -82,7 +82,6 @@
 	NSArray * names = [Names listOfNames];
 	
 	TIToken * token = [_tokenFieldView.tokenField addTokenWithTitle:[names objectAtIndex:(arc4random() % names.count)]];
-	[token setAccessoryType:TITokenAccessoryTypeDisclosureIndicator];
 	// If the size of the token might change, it's a good idea to layout again.
 	[_tokenFieldView.tokenField layoutTokensAnimated:YES]; 
 	

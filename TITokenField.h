@@ -119,10 +119,6 @@ typedef enum {
 //==========================================================
 #pragma mark - TIToken -
 //==========================================================
-typedef enum {
-	TITokenAccessoryTypeNone = 0, // Default
-	TITokenAccessoryTypeDisclosureIndicator = 1,
-} TITokenAccessoryType;
 
 @interface TIToken : UIControl
 @property (nonatomic, copy) NSString * title;
@@ -131,7 +127,6 @@ typedef enum {
 @property (nonatomic, strong) UIColor * textColor UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) UIColor * highlightedTextColor UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) UIColor * tintColor UI_APPEARANCE_SELECTOR;
-@property (nonatomic, assign) TITokenAccessoryType accessoryType;
 @property (nonatomic, assign) CGFloat maxWidth;
 
 - (instancetype)initWithTitle:(NSString *)aTitle;
