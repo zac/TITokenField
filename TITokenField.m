@@ -796,12 +796,16 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 - (void)layoutTokensAnimated:(BOOL)animated {
 	
 	CGFloat newHeight = [self layoutTokensInternal];
+    
+    BOOL growing = newHeight > self.bounds.size.height;
+    
 	if (self.bounds.size.height != newHeight){
 		
 		// Animating this seems to invoke the triple-tap-delete-key-loop-problem-thing™
         
+        [self setFrame:((CGRect){self.frame.origin, {self.bounds.size.width, newHeight}})];
+        
         void(^animations)() = ^{
-            [self setFrame:((CGRect){self.frame.origin, {self.bounds.size.width, newHeight}})];
 			[self sendActionsForControlEvents:(UIControlEvents)TITokenFieldControlEventFrameWillChange];
         };
         
@@ -809,7 +813,8 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
             if (complete) [self sendActionsForControlEvents:(UIControlEvents)TITokenFieldControlEventFrameDidChange];
         };
         
-        if (animated) {
+        // only animate if we are shrinking.
+        if (!growing && animated) {
             [UIView animateWithDuration:0.3f animations:animations completion:completion];
         } else {
             animations();
