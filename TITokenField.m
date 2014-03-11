@@ -795,13 +795,22 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 	if (self.bounds.size.height != newHeight){
 		
 		// Animating this seems to invoke the triple-tap-delete-key-loop-problem-thing™
-		[UIView animateWithDuration:(animated ? 0.3 : 0) animations:^{
-			[self setFrame:((CGRect){self.frame.origin, {self.bounds.size.width, newHeight}})];
+        
+        void(^animations)() = ^{
+            [self setFrame:((CGRect){self.frame.origin, {self.bounds.size.width, newHeight}})];
 			[self sendActionsForControlEvents:(UIControlEvents)TITokenFieldControlEventFrameWillChange];
-			
-		} completion:^(BOOL complete){
-			if (complete) [self sendActionsForControlEvents:(UIControlEvents)TITokenFieldControlEventFrameDidChange];
-		}];
+        };
+        
+        void(^completion)(BOOL) = ^(BOOL complete) {
+            if (complete) [self sendActionsForControlEvents:(UIControlEvents)TITokenFieldControlEventFrameDidChange];
+        };
+        
+        if (animated) {
+            [UIView animateWithDuration:0.3f animations:animations completion:completion];
+        } else {
+            animations();
+            completion(YES);
+        }
 	}
 }
 
@@ -852,7 +861,7 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 		[self setLeftView:nil];
 	}
 	
-	[self layoutTokensAnimated:YES];
+	[self layoutTokensAnimated:NO];
 }
 
 - (void)setPlaceholder:(NSString *)placeholder {
@@ -877,7 +886,7 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 		_placeHolderLabel = nil;
 	}
     
-    [self layoutTokensAnimated:YES];
+    [self layoutTokensAnimated:NO];
 }
 
 #pragma mark Layout
@@ -905,7 +914,7 @@ NSString * const kTextHidden = @"\u200D"; // Zero-Width Joiner
 
 - (CGRect)rightViewRectForBounds:(CGRect)bounds {
 	return ((CGRect){{bounds.size.width - self.rightView.bounds.size.width - 6,
-		bounds.size.height - self.rightView.bounds.size.height - 6}, self.rightView.bounds.size});
+		10}, self.rightView.bounds.size});
 }
 
 - (CGFloat)leftViewWidth {
